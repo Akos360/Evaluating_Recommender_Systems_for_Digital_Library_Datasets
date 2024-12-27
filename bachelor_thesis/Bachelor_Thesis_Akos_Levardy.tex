@@ -257,29 +257,29 @@ Recommending items can be done in a variety of ways. Several types of recommenda
 %Other categories also include Knowledge-Based, Context-Aware, Popularity-Based, Demographic, Utility-Based and Deep Learning-Based Recommendation.\\\\
 %
 
-{
-\begin{table}[h!]
-\centering
-\renewcommand{\arraystretch}{1.3} 
-{\Large
-\begin{tabular}{m{0.03\textwidth}|m{0.5\textwidth}}
-\hline
-\textbf{\# } & \textbf{Category} \\ \hline
-1. & Content-Based Filtering (CB) \\ \hline
-2. & Collaborative Filtering (CF) \\ \hline
-3. & Hybrid Approaches \\ \hline
-4. & Knowledge-Based \\ \hline
-5. & Context-Aware \\ \hline
-6. & Popularity-Based \\ \hline
-7. & Demographic \\ \hline
-8. & Utility-Based \\ \hline
-9. & Deep Learning-Based \\ \hline
-\end{tabular}
-}
-\caption{Types of Recommendation Systems}
-\label{table:recommendation-systems}
-\end{table}
-}
+%{
+%\begin{table}[h!]
+%\centering
+%\renewcommand{\arraystretch}{1.3} 
+%{\Large
+%\begin{tabular}{m{0.03\textwidth}|m{0.5\textwidth}}
+%\hline
+%\textbf{\# } & \textbf{Category} \\ \hline
+%1. & Content-Based Filtering (CB) \\ \hline
+%2. & Collaborative Filtering (CF) \\ \hline
+%3. & Hybrid Approaches \\ \hline
+%4. & Knowledge-Based \\ \hline
+%5. & Context-Aware \\ \hline
+%6. & Popularity-Based \\ \hline
+%7. & Demographic \\ \hline
+%8. & Utility-Based \\ \hline
+%9. & Deep Learning-Based \\ \hline
+%\end{tabular}
+%}
+%\caption{Types of Recommendation Systems}
+%\label{table:recommendation-systems}
+%\end{table}
+%}
 
 
 %
@@ -655,32 +655,32 @@ Is a ranking function that builds on the TF-IDF model. It ranks a set of documen
 \end{enumerate}
 %
 %
-\begin{table}[h!]
-\centering
-\renewcommand{\arraystretch}{2}
-{\large
-\begin{tabular}{|m{0.03\textwidth}|m{0.5\textwidth}|}
-\hline
-\textbf{\#} & \textbf{Feature Extraction Algorithms} \\ \hline
-1            & TF-IDF  \\ \hline
-2            & BoW  \\ \hline
-3            & GloVe \\ \hline
-4            & LSA \\ \hline
-5            & LDA  \\ \hline
-6            &  Word2Vec  \\ \hline
-7            & Doc2Vec   \\ \hline
-8            &  BERT  \\ \hline
-9            & FastText \\ \hline
-10           & BM25  \\ \hline
-\end{tabular}
-}
-\caption{Feature Extraction Methods}
-\label{table:feature_extraction}
-\end{table}
+%\begin{table}[h!]
+%\centering
+%\renewcommand{\arraystretch}{2}
+%{\large
+%\begin{tabular}{|m{0.03\textwidth}|m{0.5\textwidth}|}
+%\hline
+%\textbf{\#} & \textbf{Feature Extraction Algorithms} \\ \hline
+%1            & TF-IDF  \\ \hline
+%2            & BoW  \\ \hline
+%3            & GloVe \\ \hline
+%4            & LSA \\ \hline
+%5            & LDA  \\ \hline
+%6            &  Word2Vec  \\ \hline
+%7            & Doc2Vec   \\ \hline
+%8            &  BERT  \\ \hline
+%9            & FastText \\ \hline
+%10           & BM25  \\ \hline
+%\end{tabular}
+%}
+%\caption{Feature Extraction Methods}
+%\label{table:feature_extraction}
+%\end{table}
 %
 %
 %
-\vspace*{2\baselineskip}
+% \vspace*{2\baselineskip}
 %\pagebreak{}
 \subsection{Descriptions of Similarity and Distance Measures:}
 Similarity and distance measures are critical for comparing items and identifying the most relevant recommendations. These measures quantify how closely two data points—such as the input items and the recommended items features—relate to each other in a multi-dimensional space. Different measures are suited for varying data types and use cases, impacting the effectiveness of the recommendation algorithm. Below are descriptions of the similarity and distance measures that will be used, each with its unique approach to comparing items or features:
@@ -730,10 +730,10 @@ The goal is to compare the previously mentioned algorithms and for comparison th
 \end{itemize}
 %
 %
-I will focus on System-Centric Evaluation to test the performance of the algorithms and show results based on the metrics listed below.\\
+I will focus on System-Centric Evaluation to test the performance of the algorithms and show results based on the metrics listed below.\\\\\\
 %
 %
-\subsubsection{Used Metrics for evaluation:}
+\textbf{Used Metrics for evaluation:}
 It is crucial to define how Relevant an item is based on the input item and it will be calculated as how similar their features are. Higher similarity will show higher relevance between the compared items in the list of recommended items. The metrics below describe how to compare the algorithms and how they use relevancy between items:
 \begin{itemize}
 % \item Relevance - Feature Similarity - define treshold
@@ -749,7 +749,7 @@ It is crucial to define how Relevant an item is based on the input item and it w
 \item Confidence - shows the system's trust in its recommendations or predictions. It will be calculated based on Similarity between the Input item and the recommended items. After the algorithms created the feature vectors and the similarities are calculated from those, the confidence will be computed as the average similarity score across all recommended items, also normalized to a standard range [0, 1].\\
 A high confidence score indicates that the recommended items are very similar to the input item, suggesting the system is confident in its recommendations.
 
-\item Novelty - refers to the fraction of recommended items indeed new to the user. ???
+\item Novelty - refers to the fraction of recommended items indeed new to the user.\\
 
 \end{itemize}
 %
@@ -799,7 +799,7 @@ Tokenization, stopword removal, and optional stemming/lemmatization\\\\
 %
 %
 \newpage{}
-\textbf{Evaluation of Recommender Systems - Objectives and Design Space} \cite{Zangerle2023}
+\textbf{Evaluation of Recommender Systems - Objectives and Design Space}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.9\textwidth]{img/evaluation_figure.png}
@@ -820,45 +820,45 @@ Tokenization, stopword removal, and optional stemming/lemmatization\\\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\clearpage{}
-\section{Implementation}
-% 5 Pages\\
-Jupyter Notebook\\\\
-
-\subsection{Dataset}
-Books\\
-
-\subsection{Experiments}
-Offline experiments\\
-
-\subsection{Testing}
-\cite{Gunawardana2022547}
+%\clearpage{}
+%\section{Implementation}
+%% 5 Pages\\
+%Jupyter Notebook\\\\
 %
-\begin{itemize}
-\item Confidence and p-values
-\item Paired Results - sign test, McNemar's test, paired Student's t-test, Wilcoxon signed rank test
-\item Unpaired Results - Mann-Whitney test
-\item Multiple Tests - ANOVA, Friedman test for ranking
-\item Confidence Intervals - Gaussian distribution, mean, standard dev
-\end{itemize}
+%\subsection{Dataset}
+%Books\\
 %
-
-\subsection{Results and Comparison of Algorithms}
-Graphs\\
-Tables of results\\
-Description\\
+%\subsection{Experiments}
+%Offline experiments\\
+%
+%\subsection{Testing}
+%\cite{Gunawardana2022547}
+%%
+%\begin{itemize}
+%\item Confidence and p-values
+%\item Paired Results - sign test, McNemar's test, paired Student's t-test, Wilcoxon signed rank test
+%\item Unpaired Results - Mann-Whitney test
+%\item Multiple Tests - ANOVA, Friedman test for ranking
+%\item Confidence Intervals - Gaussian distribution, mean, standard dev
+%\end{itemize}
+%%
+%
+%\subsection{Results and Comparison of Algorithms}
+%Graphs\\
+%Tables of results\\
+%Description\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\clearpage{}
-\section{Conclusion}
+%\clearpage{}
+%\section{Conclusion}
 % 3-4 Pages\\
-After implementing and testing the approaches of recommendation for books, I have found out that ...\\
-
-
-\clearpage
-\thispagestyle{empty}
-\mbox{}
+%After implementing and testing the approaches of recommendation for books, I have found out that ...\\
+%
+%
+%\clearpage
+%\thispagestyle{empty}
+%\mbox{}
 
 
 
