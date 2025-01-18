@@ -1,0 +1,4 @@
+isbnlib
+gensim
+sentence-transformers
+rank-bm25
