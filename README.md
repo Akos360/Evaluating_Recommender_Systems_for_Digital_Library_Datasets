@@ -20,3 +20,7 @@ Map the currently used web recommendation systems and algorithms. Also, explore 
 - Knowledge based systems
 
 ![Recommentadion_system](readme_img/recommendation.jpg)
+
+
+## Referenced Articles list and Notes - Notion
+[BP: Evaluating Recommender Systems for Digital Library Datasets](https://www.notion.so/BP-Evaluating-Recommender-Systems-for-Digital-Library-Datasets-5f3608bfd55c453fac923d997a1262ec?pvs=4)
