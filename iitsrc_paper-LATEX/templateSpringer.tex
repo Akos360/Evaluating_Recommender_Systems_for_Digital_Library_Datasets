@@ -10,6 +10,11 @@
 \usepackage{epstopdf}
 \usepackage[hyphens]{url}
 \usepackage{hyperref}
+%\hypersetup{hidelinks}
+
+\usepackage{float}
+\usepackage{multicol}
+
 
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
@@ -19,8 +24,8 @@
 % \renewcommand\UrlFont{\color{blue}\rmfamily}
 
 \begin{document}
-%
-\title{IIT.SRC 2025 Evaluating Recommender Systems for Digital Library Datasets}
+%IIT.SRC 2025 
+\title{Evaluating Recommender Systems for Digital Library Datasets}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
@@ -32,16 +37,29 @@
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
-\institute{Faculty of Informatics and Information Technologies STU in Bratislava \\
-\email{\{abc,lncs\}@uni-heidelberg.de}}
+\institute{Faculty of Informatics and Information Technologies STU in Bratislava}
+%\email{\{abc,lncs\}@uni-heidelberg.de}}
 %
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
+
+%With the exponential growth of digital content, users increasingly struggle to identify relevant information—especially within digital libraries containing thousands of texts. Recommender systems address this challenge by delivering personalized content suggestions. This paper evaluates several content-based algorithms—including TF-IDF, LSA, GloVe, FastText, BoW, and BERT—for recommending books and paragraphs based on textual content.
+%
+%Two datasets were used: full paragraphs and book descriptions. The models were compared using metrics such as average similarity, diversity, coverage, confidence, execution time, and memory usage. FastText and GloVe achieved the highest recommendation relevance, with average similarity scores of 0.945 and 0.981 on paragraph-level data, and 0.939 and 0.989 respectively on description-level data. However, FastText had significantly higher memory usage and runtime. BERT, while more computationally expensive, offered high confidence (0.95+) with moderate similarity. Simpler models like BoW and TF-IDF were faster and lighter on resources but showed lower accuracy and coverage.
+%
+%These findings highlight trade-offs between model accuracy, computational efficiency, and recommendation diversity, providing actionable guidance for digital library system designers. The results also suggest that combining embeddings like GloVe or BERT with lightweight retrieval techniques could lead to more scalable and effective hybrid systems.
+%
+%
+%
+%With the exponential growth of digital content, users increasingly struggle to identify relevant information, particularly within digital libraries. Recommender systems alleviate this by generating personalized suggestions based on user behavior or item features. This paper evaluates multiple content-based algorithms—including TF-IDF, LSA, GloVe, FastText, and BERT—on their ability to generate paragraph and book-level recommendations from a library dataset. We benchmark each model using metrics such as similarity, confidence, diversity, and coverage, along with computational performance indicators like runtime and memory usage. Our findings show that while transformer-based and neural embeddings (e.g., FastText, BERT) achieve higher relevance, traditional methods like LSA strike a better balance between accuracy, diversity, and efficiency. These results provide actionable insights into algorithm selection for scalable recommendation systems in academic libraries.
+
 %With the increasing amount of digital content online, recommender systems play an important role in filtering out and helping users navigate large information spaces by generating personalized recommendations. Digital libraries can improve user experience by selecting the most effective and suitable recommendation systems. This study focuses on evaluating content-based recommender systems, which are specifically designed for digital library datasets. These content-based filtering methods analyze textual data from books to generate recommendations based on similarity between content features. The goal is to investigate different algorithms such as TF-IDF, LSA, GloVe or FastText, and testing them with different settings to assess their effectiveness in generating Top-N recommendations from book text data. 
 %In order to fully evaluate these algorithms, we conduct experiments using multiple performance metrics like similarity, diversity, confidence or even coverage. Additionally, the performance of the algorithms is analyzed by tracking execution time and memory consumption. By benchmarking these factors, we provide information on the trade-offs between accuracy and computational efficiency for the different tested models. This research identifies the strengths and weaknesses of the selected algorithms for book recommendations, making it easier to navigate large digital collections.\\\\
 
-As digital content continues to grow rapidly, users face increasing difficulty in finding relevant information efficiently—especially within large-scale digital libraries. Recommender systems help address this challenge by delivering personalized suggestions that improve user experience and reduce information overload. This study focuses on evaluating content-based recommender systems tailored for digital library datasets. These systems analyze textual data from books to generate recommendations based on similarities in content features. The goal is to compare algorithms such as TF-IDF, LSA, GloVe, and FastText under different settings, assessing their effectiveness in generating Top-N recommendations. To provide a comprehensive evaluation, the study uses multiple performance metrics including similarity, diversity, confidence, and coverage, while also measuring execution time and memory usage. By benchmarking these factors, we highlight the trade-offs between accuracy and computational efficiency, offering insights into the strengths and weaknesses of each algorithm for book recommendation tasks in digital libraries.
+As digital content continues to grow rapidly, users face increasing difficulty in finding relevant information efficiently—especially within large-scale digital libraries. Recommender systems help address this challenge by delivering personalized suggestions that improve user experience and reduce information overload. This study focuses on evaluating content-based recommender systems tailored for digital library datasets. These systems analyze textual data from books to generate recommendations based on similarities in content features. The goal is to compare algorithms such as TF-IDF, LSA, GloVe, FastText and Sentence-BERT under different settings, assessing their effectiveness in generating Top-N recommendations. To provide a comprehensive evaluation, the study uses multiple performance metrics including similarity, diversity, confidence, and coverage, while also measuring execution time and memory usage. Our findings show that while transformer-based and neural embeddings (e.g., FastText, BERT) achieve higher similarity scores, traditional methods like LSA strike a better balance between similarity, diversity, and efficiency. These results provide actionable insights into algorithm selection for scalable recommendation systems in academic libraries.
+
+%By benchmarking these factors, we highlight the trade-offs between accuracy and computational efficiency, offering insights into the strengths and weaknesses of each algorithm for book recommendation tasks in digital libraries.
 \keywords{Recommender System  \and  Content-Based  \and  Evaluation  \and  Performance Metrics  \and  Digital Library.}
 \end{abstract}
 %
@@ -54,7 +72,7 @@ Making decisions in today’s digital world is not always easy. Whether choosing
 
 The task of providing users with available options that match their needs and interests is increasingly important in today’s consumer society. Without a starting point—such as a list of relevant suggestions—users may feel overwhelmed or even choose to give up entirely. For example, trying to pick a movie from scratch without any recommendations can lead to decision fatigue. Recommender systems help prevent this by offering tailored suggestions that guide the user and reduce decision friction.
 
-It’s also important to recognize the dual perspective from which recommendation systems operate \cite{Ricci20221}. On one hand, service providers aim to use these systems to sell more items, improve user satisfaction, or better understand customer behavior. On the other hand, from the user’s viewpoint, RS assist in discovering suitable items, recommending sequences, or even influencing others' decisions.
+%It’s also important to recognize the dual perspective from which recommendation systems operate \cite{Ricci20221}. On one hand, service providers aim to use these systems to sell more items, improve user satisfaction, or better understand customer behavior. On the other hand, from the user’s viewpoint, RS assist in discovering suitable items, recommending sequences, or even influencing others' decisions.
 
 The core goal of RS is to personalize content and improve user experience by recommending books, movies, music, products, and more. For example, in a digital library which has loads of books available online, a recommender system might suggest books or even specific paragraphs based on a user’s reading history \cite{Zangerle2023}. These systems function by identifying relationships between users and the items they interact with—such as preferring historical documentaries over action films \cite{pub.1022525812}.
 
@@ -143,138 +161,345 @@ Recommending items can be done in a variety of ways. Several types of recommenda
 %
 %
 %\textbf{Content-Based Filtering} works in a way that it creates user profiles and suggests the individual items or products based on the users past choices with similar items. The items have various features and characteristics which connect them.\\
-\textbf{Content-Based Filtering} recommends items based on a user's previous choices or interactions by finding similarities between the items the user has shown interest in and other items with similar features (e.g., genre, attributes, keywords) \cite{pub.1034486657}.\\
+\textbf{Content-Based Filtering} recommends items based on a user's previous choices or interactions by finding similarities between the items the user has shown interest in and other items with similar features (e.g., genre, attributes, keywords) \cite{pub.1034486657}.
 This approach focuses primarily on the item's characteristics rather than relying on other users' preferences.\\
-\textbf{Collaborative Filtering} relies more on preferences of other users and their behaviour. The point is that users who had similar interests before will have them again in the future for new items. This technique relies on having user related data, feedback that could be either explicit (ratings) or implicit (passive user behaviour).
-\begin{figure}
+\textbf{Collaborative Filtering} relies more on preferences of other users and their behaviour. The point is that users who had similar interests before will have them again in the future for new items. This technique relies on having user related data, feedback that could be either explicit (ratings) or implicit (passive user behaviour) \cite{NILASHI2018507}.
+%
+\begin{figure}[H]
+\vspace{-1em}
 \centering
-\includegraphics[width=0.8\textwidth]{img/collaborative_example.png}
-%\includegraphics[width=\textwidth]{fig1.eps}
-\caption{Illustration of Memory-based CF recommendation.} \label{fig:collaborative_example}
-\end{figure}\\
-\textbf{Context-Aware} recommendation systems are adding contextual factors to the rating process, where the recommended item is based on the users explicit ratings, the items implicitly inferred ratings and also the contextual variables. The variables for example when recommending a movie can be the location from where the user watches the movie, the time and the companion who the user watches the movie with.\\
-\textbf{Popularity-Based} recommendations offer products that are popular or well-liked by a lot of users. They assume that these popular items are likely to be of interest to the majority of users, not considering their personal preferences.\\
-\textbf{Demographic} recommendation systems are recommending items based on a demographic profile of the user. They categorize the users from their personal attributes and try to make user stereotypes.\\
-\textbf{Knowledge-Graphs} use a network of data where items are linked through their features. Showing how items relate to one another and connecting them with more information \cite{Imene2022488}.
-\begin{figure}
-\centering
-\includegraphics[width=0.8\textwidth]{img/knowledge_graph_example.png}
-%\includegraphics[width=\textwidth]{fig1.eps}
-\caption{Illustration of KG-aware recommendation.} \label{fig:knowledge_graph_example}
-\end{figure}\\
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{img/collaborative_example.png}
+  \caption{Memory-based CF recommendation.}
+  \label{fig:collaborative_example}
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{img/knowledge_graph_example.png}
+  \caption{KG-aware recommendation.}
+  \label{fig:knowledge_graph_example}
+\end{minipage}
+\vspace{-1em}
+\end{figure}
+%
+%\begin{figure}[!htbp]
+%\centering
+%\includegraphics[width=0.5\textwidth]{img/collaborative_example.png}
+%%\includegraphics[width=\textwidth]{fig1.eps}
+%\caption{Illustration of Memory-based CF recommendation.} \label{fig:collaborative_example}
+%\end{figure}
+%\vspace{-1em}
+%
+%
+\textbf{Knowledge-Graphs} use a network of data where items are linked through their features. Showing how items relate to one another and connecting them with more information \cite{Imene2022488}.\\
+%
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.5\textwidth]{img/knowledge_graph_example.png}
+%%\includegraphics[width=\textwidth]{fig1.eps}
+%\caption{Illustration of KG-aware recommendation.} \label{fig:knowledge_graph_example}
+%\end{figure}
+%
+\textbf{Context-Aware} recommendation systems are adding contextual factors to the rating process, where the recommended item is based on the users explicit ratings, the items implicitly inferred ratings and also the contextual variables \cite{Haruna2017}. The variables for example when recommending a movie can be the location from where the user watches the movie, the time and the companion who the user watches the movie with.\\
+\textbf{Demographic} recommendation systems are recommending items based on a demographic profile of the user. They categorize the users from their personal attributes and try to make user stereotypes \cite{Burke2002331}.\\
 \textbf{Utility-Based} systems generate the recommendations by computing the utility of each item for the user. The utility of an item refers to how valuable it is to a user and is calculated using a utility function which combines different factors of the user's preferences \cite{Burke2002331}.\\
 \textbf{Deep Learning-Based} are trying to find complex patterns in the users behaviour and the items features using deep learning algorithms and neural networks. These models can locate hidden links and can offer highly customized recommendations.\\
-\textbf{Hybrid methods} try to combine the useful characteristics of both collaborative filtering and content-based filtering methods. They take into account both the users past preferences and the preferences of other people who might share the users taste \cite{melville:aaai02}. \\\\
+\textbf{Hybrid methods} try to combine the useful characteristics of both collaborative filtering and content-based filtering methods. They take into account both the users past preferences and the preferences of other people who might share the users taste \cite{melville:aaai02}. \\
 %
 The most popular techniques used are the Collaborative Filtering, Content-Based Filtering and the Hybrid method \cite{pub.1072601078}. This paper will focus on comparing different algortihms that are used for Content-Based Filtering, since trying to recommend books and their paragraphs in digital libraries relies on the textual content of them.
 
 
 \section{System Decription}
 %\textbf{SYSTEM DESCRIPTION}\\
-\textbf{Extracting Information and Building a Dataset}\\
-First, the books, meaning their whole text and summaries were extracted from the digital library and separeted into JSON files, each file contained one books whole data, which was even more separated into sentences, pages and paragraphs.\\
-From extracting metadata of the books from the digital library, the dataset had 403 different books short summaries that were used in the testing phase. On the other hand, the full text extraction resulted in a dataset of 45 163 paragraphs where the average paragraph word count was around 63.73 words and the longest paragraph had 2016 words.\\
+%\textbf{Extracting Information and Building a Dataset}\\
+%First, the books, meaning their whole text and summaries were extracted from the digital library and separeted into JSON files, each file contained one books whole data, which was even more separated into sentences, pages and paragraphs.\\
+%From extracting metadata of the books from the digital library, the dataset had 403 different books short summaries that were used in the testing phase. On the other hand, the full text extraction resulted in a dataset of 45 163 paragraphs where the average paragraph word count was around 63.73 words and the longest paragraph had 2016 words.\\
 % the algorithms were tested with the paragraphs of the books\\
 %Each algorithm embedded or vectorized all of the paragraphs as they required and got an input paragraph that they also embedded or vectorized, computed cosine similarity between the input and each other paragraph in the datased, based on mostly cosine similarity they were sorted and top 5 paragraphs were returned as the algorithms recommendations.\\\\
-Each algorithm began by embedding or vectorizing all of the paragraphs in the dataset according to its specific requirements. This process involved transforming the text into numerical representations, such as vectors, which could then be compared based on their similarities. After the entire dataset of paragraphs was embedded or vectorized, the system received an input paragraph. This input paragraph was also embedded or vectorized in the same manner as the rest of the dataset. Once the input paragraph was transformed, the system calculated the cosine similarity between the input paragraph’s vector and the vectors of each of the other paragraphs in the dataset.\\\\
-The cosine similarity measure was used to determine how closely related the input paragraph was to each of the other paragraphs. Cosine similarity is a mathematical measure that assesses the angle between two vectors, with a smaller angle indicating higher similarity. Based on the computed cosine similarity scores, the paragraphs in the dataset were sorted, with the most similar ones ranked at the top. From this sorted list, the top 5 most similar paragraphs were selected as the algorithm's recommendations for the input paragraph. These top 5 paragraphs were returned to the user as the most relevant or similar ones based on the cosine similarity metric.\\\\
+%Each algorithm began by embedding or vectorizing all of the paragraphs in the dataset according to its specific requirements. This process involved transforming the text into numerical representations, such as vectors, which could then be compared based on their similarities. After the entire dataset of paragraphs was embedded or vectorized, the system received an input paragraph. This input paragraph was also embedded or vectorized in the same manner as the rest of the dataset. Once the input paragraph was transformed, the system calculated the cosine similarity between the input paragraph’s vector and the vectors of each of the other paragraphs in the dataset.\\\\
+%The cosine similarity measure was used to determine how closely related the input paragraph was to each of the other paragraphs. Cosine similarity is a mathematical measure that assesses the angle between two vectors, with a smaller angle indicating higher similarity. Based on the computed cosine similarity scores, the paragraphs in the dataset were sorted, with the most similar ones ranked at the top. From this sorted list, the top 5 most similar paragraphs were selected as the algorithm's recommendations for the input paragraph. These top 5 paragraphs were returned to the user as the most relevant or similar ones based on the cosine similarity metric.\\\\
+%
+\subsection*{Extracting Information and Building a Dataset}
+First, the books were extracted from the digital library and stored as individual JSON files. Each file contained the entire data of a single book, further segmented into sentences, pages, and paragraphs for flexibility in experimentation.
+For the full-text analysis, a dataset of 45k paragraphs was created. The average paragraph length was approximately 60-70 words, with the longest paragraph consisting of 2000 words.\\
+In addition to the extracted book paragraphs, a publicly available dataset titled \textit{Books Details Dataset}, which was scraped from Goodreads \cite{goodreads_kumar_2022} was also used in the experiments. This dataset includes metadata for over 13,000 books, such as title, author, genres, ratings, and textual descriptions averaging approximately 163 words. These summaries were treated similarly to paragraphs during preprocessing and recommendation, allowing models to be tested on both short- and long-form content for robustness and comparison.
+
+\subsection*{Models selected for the Evaluation}
+In the context of academic book recommendations, a variety of content-based algorithms can be used to extract meaningful patterns and relationships from textual data. These algorithms differ in their approach to representing and analyzing documents, words and textual data. The selected algorithms represent a diverse spectrum of CB recommendation approaches, from classical sparse models to modern transformer-based embeddings:
+
+\begin{itemize}
+    \item \textbf{TF-IDF and BoW} are \emph{sparse count-based models}, included as traditional baselines for textual similarity. They are fast, interpretable, and serve as a reference point for evaluating more advanced models.
+    \item \textbf{LSA} is a \emph{matrix factorization technique} that captures latent semantic structures in documents. It adds a dimension-reduction perspective to the evaluation.
+    \item \textbf{GloVe and FastText} are \emph{pretrained static word embedding models}, chosen for their ability to encode semantic meaning into dense vectors. FastText also includes subword information, allowing it to handle out-of-vocabulary words effectively.
+    \item \textbf{Sentence-BERT (all-MiniLM-L6-v2)} is a \emph{transformer-based deep learning model} specifically optimized for sentence-level semantic similarity. It represents a state-of-the-art approach in content-based recommendation and is included to benchmark modern deep embedding techniques.
+\end{itemize}
+%
+This selection allows a fair comparison across traditional, embedding-based, and deep learning methods in terms of similarity, diversity, and computational efficiency.\\
 %
 %
-\textbf{Descriptions of the Algorithms Used}\\
-In the context of academic book recommendations, a variety of content-based algorithms can be used to extract meaningful patterns and relationships from textual data. These algorithms differ in their approach to representing and analyzing documents, words and textual data. Below is an overview of common algorithms, highlighting their methodology and key characteristics:\\\\
-\textbf{TF-IDF (Term Frequency - Inverse Document Frequency)} creates two matrices that are interrelated, trying to figure out the relevancy of a given term (word) to a document given a larger body of documents.\\\\
-TF means how often a given word occurs in the given document, because words that occur frequently are probably more important. DF means how often the given word occurs in an entire set of documents, but this does not have to mean the word is important, it just shows common words that appear everywhere. So using Inverse DF shows how often the word appears in a document, over how often it appears everywhere.\\\\
-\textbf{BoW (Bag of Words)} creates a set of vectors containing the count of word occurrences in the document. Unlike TF-IDF, BoW just counts the occurrences of unique words and puts them in its vocabulary so each word becomes a feature or dimension. Each document is represented as a vector based on the frequency of words from the vocabulary. The term-document matrix represents the documents as rows and the unique words as columns with cells showing frequency.\\\\
-\textbf{GloVe (Global Vectors for Word Representation)} is a word embedding model that builds a co-occurrence matrix where rows represent the words, columns represent the context words and each cell contains the frequency with which the word and context word co-occur within a specified window. The matrix is factorized to learn word embeddings. After training GloVe produces embeddings for all words in the vocabulary.\\\\
-\textbf{LSA (Latent Semantic Analysis)} is a model for extracting and representing the contextual-usage meaning of words by statistical computations applied to a large corpus of documents. It uses Singular Value Decomposition (SVD) and Rank lowering (Dimensionality reduction). The SVD splits the Matrix of document by keyword into three matrices, which are topic by keyword, document by topic and the diagonal matrix.\\\\
-\textbf{FastText} breaks words into character n-grams and learns embeddings for these subwords. It can handle words that are out of the vocabulary, because it models character n-grams and not words. For output it produces dense, fixed-length word vectors that have the additional subword information.\\
+To generate recommendations, each algorithm first transformed (embedded or vectorized) all paragraphs in the dataset into numerical representations according to its own architecture:
+%
+\begin{itemize}
+    \item \textbf{TF-IDF} and \textbf{BoW} used scikit-learn's \texttt{TfidfVectorizer} and \texttt{CountVectorizer} with English stop words removed. Tokenization was based on whitespace and punctuation, with a vocabulary size capped at 5,000 most frequent terms.
+
+    \item \textbf{LSA} began with TF-IDF vectorization and then applied \texttt{TruncatedSVD} for dimensionality reduction with 500 components, uncovering latent semantic structures across terms.
+
+    \item \textbf{GloVe} used pre-trained 50-dimensional word embeddings from the \texttt{glove.6B.50d.txt} file, which contains word vectors trained on 6 billion tokens from Wikipedia. Tokenization was done using simple whitespace splitting, and paragraph embeddings were obtained by averaging the vectors of all matching words in the vocabulary.
+
+    \item \textbf{FastText} was trained on the dataset using \texttt{gensim}'s implementation with the following hyperparameters: \texttt{vector\_size=100}, \texttt{window=5}, \texttt{min\_count=2}, \texttt{workers=6}, and \texttt{epochs=20}. Paragraph vectors were computed by averaging all available subword embeddings from the tokenized input.
+
+    \item \textbf{Sentence-BERT} used the pre-trained \texttt{all-MiniLM-L6-v2} model from the \texttt{SentenceTransformers} library. The model handled tokenization and embedding internally, producing 384-dimensional sentence embeddings via mean pooling. Embeddings were computed on GPU to accelerate cosine similarity calculations.
+\end{itemize}
+After generating embeddings or vectors for all documents, the input paragraph was transformed using the same method. Cosine similarity was calculated between the input and all candidate paragraphs to identify the most similar items. This metric measures the angle between two vectors, with a smaller angle (closer to 1) indicating greater similarity.
+%
+To ensure efficiency, especially on larger datasets, the cosine similarity computations were parallelized using \texttt{joblib}. 
+The sorted similarity scores were then used to return the most similar paragraphs as recommendations.\\
+%
+To control the quality of recommendations, only results with cosine similarity above a dynamically computed threshold were retained. This threshold was defined as a fraction (typically 50\%) of the maximum similarity score observed in a given query. The rationale behind this relative threshold was to adapt the selection to each input case and filter out weak matches while preserving the top results. Finally, the remaining candidates were sorted by similarity score, and the top-N most similar items were returned as recommendations.
+%
+Notably, the similarity threshold varied across models. For TF-IDF, BoW, LSA, and BERT, the default threshold of 0.5 times the maximum similarity score was used. However, FastText and GloVe produced consistently high similarity scores across most inputs, often exceeding 0.9 even for weak semantic matches. This was likely due to their dense embeddings and averaging strategies, which compress semantic differences. Therefore, stricter thresholds were applied—0.95 for FastText and 0.99 for GloVe—to avoid returning overly generic or weakly relevant results. This threshold tuning was essential to ensure the coverage metric reflected meaningful recommendations and to improve result precision in models where cosine similarity values were inflated by design.
+
+%\textbf{Embedding and Recommendation Process}\\
+%Each algorithm followed a multi-step process to generate recommendations. First, all paragraphs or descriptions were transformed into vector representations specific to the chosen model. For example, TF-IDF and BoW tokenized the input by removing stop words and then constructed sparse matrices based on term frequency (with a vocabulary size limited to 5000 for TF-IDF). LSA reduced these TF-IDF representations using Truncated Singular Value Decomposition with 500 latent dimensions. GloVe and FastText used pretrained or self-trained word embeddings, computing paragraph vectors as the mean of word vectors found in the text. FastText further captured subword information through character n-grams, and BERT (specifically, the all-MiniLM-L6-v2 variant) produced contextual embeddings by encoding entire sentences using transformer attention mechanisms.
 
 
+
+
+
+
+
+%
+%
+
+
+
+
+
+
+
+
+%\textbf{Descriptions of the Algorithms Used}\\
+%In the context of academic book recommendations, a variety of content-based algorithms can be used to extract meaningful patterns and relationships from textual data. These algorithms differ in their approach to representing and analyzing documents, words and textual data. Below is an overview of common algorithms, highlighting their methodology and key characteristics:\\\\
+%\textbf{TF-IDF (Term Frequency - Inverse Document Frequency)} creates two matrices that are interrelated, trying to figure out the relevancy of a given term (word) to a document given a larger body of documents.\\\\
+%TF means how often a given word occurs in the given document, because words that occur frequently are probably more important. DF means how often the given word occurs in an entire set of documents, but this does not have to mean the word is important, it just shows common words that appear everywhere. So using Inverse DF shows how often the word appears in a document, over how often it appears everywhere.\\\\
+%\textbf{BoW (Bag of Words)} creates a set of vectors containing the count of word occurrences in the document. Unlike TF-IDF, BoW just counts the occurrences of unique words and puts them in its vocabulary so each word becomes a feature or dimension. Each document is represented as a vector based on the frequency of words from the vocabulary. The term-document matrix represents the documents as rows and the unique words as columns with cells showing frequency.\\\\
+%\textbf{GloVe (Global Vectors for Word Representation)} is a word embedding model that builds a co-occurrence matrix where rows represent the words, columns represent the context words and each cell contains the frequency with which the word and context word co-occur within a specified window. The matrix is factorized to learn word embeddings. After training GloVe produces embeddings for all words in the vocabulary.\\\\
+%\textbf{LSA (Latent Semantic Analysis)} is a model for extracting and representing the contextual-usage meaning of words by statistical computations applied to a large corpus of documents. It uses Singular Value Decomposition (SVD) and Rank lowering (Dimensionality reduction). The SVD splits the Matrix of document by keyword into three matrices, which are topic by keyword, document by topic and the diagonal matrix.\\\\
+%\textbf{FastText} breaks words into character n-grams and learns embeddings for these subwords. It can handle words that are out of the vocabulary, because it models character n-grams and not words. For output it produces dense, fixed-length word vectors that have the additional subword information.\\
+
+
+% SMALL TABLE
+%\begin{table}
+%\caption{Detailed Results - Using Book Descriptions}\label{tab:descriptions_full}
+%\centering
+%\resizebox{\textwidth}{!}{
+%\begin{tabular}{|l|l|l|l|l|l|l|l|}
+%\hline
+%\textbf{Algorithm} & \textbf{Avg Similarity} & \textbf{Coverage (\%)} & \textbf{Confidence} & \textbf{Diversity} & \textbf{Elapsed Time (s)} & \textbf{Memory (MB)} & \textbf{CPU Time (s)} \\
+%\hline
+%TF-IDF    & 0.196 & 0.34  & 0.95279 & 0.0027029 & 3.973  & 293.49  & 1.729  \\ \hline
+%BoW       & 0.254 & 0.23  & 0.93772 & 0.0049934 & 15.256 & 378.45  & 0.809  \\ \hline
+%FastText  & 0.945 & 0.53  & 0.99023 & 0.0000988 & 49.959 & 2002.80 & 44.964 \\ \hline
+%GloVe     & 0.981 & 0.25  & 0.99787 & 0.0000045 & 14.888 & 420.78  & 10.314 \\ \hline
+%LSA       & 0.425 & 0.12  & 0.93325 & 0.0055086 & 13.248 & 744.64  & 8.179  \\ \hline
+%BERT      & 0.359 & 0.20  & 0.94778 & 0.0033437 & 74.456 & 1227.44 & 103.399\\ \hline
+%\end{tabular}
+%}
+%\end{table}
 
 \begin{table}
-\caption{Results of Different Algorithms - Using Paragraphs}\label{tab1}
+\caption{Metrics Comparison by Algorithm – Book Descriptions}
 \centering
-\begin{tabular}{|l|l|l|l|l|}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
-\textbf{Algorithm} & \textbf{Avg Similarity} & \textbf{Avg Confidence} & \textbf{Avg Diversity} &  \textbf{Avg Elapsed\_time (s)} \\ 
+\textbf{Metric} & \textbf{TF-IDF} & \textbf{BoW} & \textbf{FastText} & \textbf{GloVe} & \textbf{LSA} & \textbf{BERT} \\
 \hline
-TF-IDF      & 0.41  & 0.04  & 0.59  & 13.86  \\ \hline
-BoW         & 0.50  & 0.13  & 0.50  & 13.25  \\ \hline
-FastText    & 0.98  & 0.00  & 0.02  & 42.81 \\ \hline
-GloVe       & 0.99  & 0.00  & 0.01  & 14.39 \\ \hline
-LSA         & 0.66  & 0.02  & 0.34  & 12.66   \\ \hline
-
+Avg Similarity      & 0.196   & 0.254   & 0.945   & 0.981   & 0.425   & 0.359   \\ \hline
+Coverage (\%)       & 0.34    & 0.23    & 0.53    & 0.25    & 0.12    & 0.20    \\ \hline
+Confidence          & 0.95279 & 0.93772 & 0.99023 & 0.99787 & 0.93325 & 0.94778 \\ \hline
+Diversity           & 0.00270 & 0.00499 & 0.00010 & 0.00000 & 0.00551 & 0.00334 \\ \hline
+Elapsed Time (s)    & 3.973   & 15.256  & 49.959  & 14.888  & 13.248  & 74.456  \\ \hline
+Memory Usage (MB)   & 293.49  & 378.45  & 2002.80 & 420.78  & 744.64  & 1227.44 \\ \hline
+CPU Time (s)        & 1.729   & 0.809   & 44.964  & 10.314  & 8.179   & 103.399 \\ \hline
 \end{tabular}
+}
 \end{table}
-
+%
+\vspace{-1em}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}
-\caption{Results of Different Algorithms - Using Summaries}\label{tab2}
+\caption{Metrics Comparison by Algorithm – Paragraphs}
 \centering
-\begin{tabular}{|l|l|l|l|l|}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
-
-\textbf{Algorithm} & \textbf{Avg Similarity} & \textbf{Avg Confidence} & \textbf{Avg Diversity} & \textbf{Avg Coverage (\%)} \\ 
+\textbf{Metric} & \textbf{TF-IDF} & \textbf{BoW} & \textbf{FastText} & \textbf{GloVe} & \textbf{LSA} & \textbf{BERT} \\
 \hline
-TF-IDF    & 0.18                    & 0.092               & 0.82                & 3.28 \\ \hline
-BoW                 & 0.256                   & 0.108               & 0.744               & 4.14 \\ \hline
-FastText            & 0.993                   & 0.005               & 0.007               & 37.44 \\ \hline
-GloVe               & 0.983                   & 0.021               & 0.017               & 8.14 \\ \hline
-LSA                 & 0.497                   & 0.133               & 0.503               & 4.17 \\ \hline
-
-%Word2Vec            & 1.0                     & 0.0                 & 0.0                 & 56.6 \\ \hline
-%Doc2Vec             & 1.0                     & 0.001               & 0.0                 & 77.44 \\ \hline
-%BERT                & 0.445                   & 0.119               & 0.555               & 7.02 \\ \hline
-%BM25                & 0.836                   & 0.188               & 0.164               & 6.63 \\ \hline
-%LDA                 & 0.991                   & 0.029               & 0.009               & 14.96 \\ \hline
-
+Avg Similarity      & 0.276   & 0.193   & 0.939   & 0.989   & 0.297   & 0.349   \\ \hline
+Coverage (\%)       & 0.06    & 1.30    & 15.32   & 21.52   & 1.20    & 9.29    \\ \hline
+Confidence          & 0.95279 & 0.97252 & 0.99032 & 0.99799 & 0.95164 & 0.95391 \\ \hline
+Diversity           & 0.00270 & 0.00074 & 0.00010 & 0.00000 & 0.00273 & 0.00246 \\ \hline
+Elapsed Time (s)    & 15.206  & 3.722   & 13.373  & 4.646   & 3.501   & 21.217  \\ \hline
+Memory Usage (MB)   & 293.49  & 202.89  & 1193.43 & 344.33  & 424.85  & 1141.38 \\ \hline
+CPU Time (s)        & 7.230   & 0.275   & 11.821  & 3.210   & 2.041   & 27.757  \\ \hline
 \end{tabular}
-
+}
 \end{table}
+%
+%
+% OLD TABLES
+%\begin{table}
+%\caption{Results of Different Algorithms - Using Paragraphs}\label{tab1}
+%\centering
+%\begin{tabular}{|l|l|l|l|l|}
+%\hline
+%\textbf{Algorithm} & \textbf{Avg Similarity} & \textbf{Avg Confidence} & \textbf{Avg Diversity} &  \textbf{Avg Elapsed\_time (s)} \\ 
+%\hline
+%TF-IDF      & 0.41  & 0.04  & 0.59  & 13.86  \\ \hline
+%BoW         & 0.50  & 0.13  & 0.50  & 13.25  \\ \hline
+%FastText    & 0.98  & 0.00  & 0.02  & 42.81 \\ \hline
+%GloVe       & 0.99  & 0.00  & 0.01  & 14.39 \\ \hline
+%LSA         & 0.66  & 0.02  & 0.34  & 12.66   \\ \hline 
+%
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}
+%\caption{Results of Different Algorithms - Using Summaries}\label{tab2}
+%\centering
+%\begin{tabular}{|l|l|l|l|l|}
+%\hline
+%
+%\textbf{Algorithm} & \textbf{Avg Similarity} & \textbf{Avg Confidence} & \textbf{Avg Diversity} & \textbf{Avg Coverage (\%)} \\ 
+%\hline
+%TF-IDF    & 0.18                    & 0.092               & 0.82                & 3.28 \\ \hline
+%BoW                 & 0.256                   & 0.108               & 0.744               & 4.14 \\ \hline
+%FastText            & 0.993                   & 0.005               & 0.007               & 37.44 \\ \hline
+%GloVe               & 0.983                   & 0.021               & 0.017               & 8.14 \\ \hline
+%LSA                 & 0.497                   & 0.133               & 0.503               & 4.17 \\ \hline
+%
+%%Word2Vec            & 1.0                     & 0.0                 & 0.0                 & 56.6 \\ \hline
+%%Doc2Vec             & 1.0                     & 0.001               & 0.0                 & 77.44 \\ \hline
+%%BERT                & 0.445                   & 0.119               & 0.555               & 7.02 \\ \hline
+%%BM25                & 0.836                   & 0.188               & 0.164               & 6.63 \\ \hline
+%%LDA                 & 0.991                   & 0.029               & 0.009               & 14.96 \\ \hline
+%
+%\end{tabular}
+%
+%\end{table}
 
 
-\section{Experimental Results}
+
 %\noindent
 %\textbf{EXPERIMENTAL RESULTS}\\\\
-% SHOW EXAMPLES OF VECTORS OR WIEGHTS THAT ALGOS USE\\\\
-% CPU / MEMORY usage graphs\\\\
 %
-The experiment results from the two tables present the performance of different algorithms evaluated based on two distinct content types: paragraphs and summaries. The metrics used to evaluate the algorithms include average similarity, confidence, diversity, and coverage. Here's a brief description of these metrics:
-\textbf{Average similarity} indicates how closely the recommendations align with the input content, with higher values representing more relevant recommendations. \textbf{Confidence} measures the algorithm’s certainty about the relevance of its recommendations. Higher values suggest the algorithm is more confident in its suggestions. \textbf{Diversity} reflects the variety of recommendations made. A higher diversity value indicates that the algorithm provides a broader range of suggestions.
-\textbf{Coverage} refers to the percentage of items from the dataset that the algorithm is able to recommend. A higher coverage indicates that the algorithm suggests a larger portion of the available items.
+%The experiment results from the two tables present the performance of different algorithms evaluated based on two distinct content types: paragraphs and summaries. The metrics used to evaluate the algorithms include average similarity, confidence, diversity, and coverage. Here's a brief description of these metrics:
+%\textbf{Average similarity} indicates how closely the recommendations align with the input content, with higher values representing more relevant recommendations. \textbf{Confidence} measures the algorithm’s certainty about the relevance of its recommendations. Higher values suggest the algorithm is more confident in its suggestions. \textbf{Diversity} reflects the variety of recommendations made. A higher diversity value indicates that the algorithm provides a broader range of suggestions.
+%\textbf{Coverage} refers to the percentage of items from the dataset that the algorithm is able to recommend. A higher coverage indicates that the algorithm suggests a larger portion of the available items.
 
-\noindent
-\textbf{Performance on Paragraphs} is shown in the first table, which contain more detailed information compared to summaries. As such, the metrics for paragraphs may show higher values for relevance and coverage, since longer text provides more context.
 
-\noindent
-\textbf{FastText} stands out with the highest \textbf{average similarity} of 0.98, meaning its recommendations are highly relevant. However, this comes at the cost of \textbf{average elapsed time} (42.81 seconds), indicating that it is slower compared to other algorithms. It performs well in terms of relevance but is slower in processing. \textbf{TF-IDF} and \textbf{BoW}, while being faster (13.25 and 13.86 seconds for \textbf{avg\_elapsed\_time}), show lower \textbf{average similarity} (0.41 and 0.50, respectively), meaning their recommendations are less aligned with the user’s preferences. These algorithms are quicker but less accurate. \textbf{GloVe} and \textbf{LSA} perform moderately well in terms of similarity, with \textbf{LSA} being slightly faster than \textbf{GloVe}.\\
-Overall, the first table highlights the trade-off between accuracy and efficiency: algorithms like \textbf{FastText} provide more accurate results but take more time to process, while others like \textbf{TF-IDF} and \textbf{BoW} are quicker but less precise in their recommendations.
 
-\noindent
-\textbf{Performance on Summaries} is shown in the second table. Since summaries are shorter and less detailed than paragraphs, the results show lower accuracy (i.e., \textbf{average similarity}) but provide a broader view of how the algorithms behave with concise content. The coverage of each algorithm was set to return recommended items above the same dynamically set threshold.\\
-\noindent
-\textbf{FastText} again performs the best in \textbf{average similarity} with a value of 0.993, which indicates its ability to generate highly relevant recommendations. It also has the highest \textbf{coverage} at 37.44\%, suggesting it can recommend a large portion of the dataset. However, its \textbf{confidence} and \textbf{diversity} values are lower, suggesting that while the recommendations are relevant, they may be more focused and less diverse. 
-\noindent
-\textbf{GloVe} performs well with an \textbf{average similarity} of 0.983, meaning its recommendations are quite relevant, though its \textbf{coverage} is only 8.14\%, implying it covers fewer items from the dataset compared to algorithms like \textbf{FastText}.
-\noindent
-\textbf{LSA} shows a moderate \textbf{average similarity} of 0.497, indicating that its recommendations are less aligned with the summaries compared to \textbf{FastText} and \textbf{GloVe}. However, it strikes a good balance between \textbf{diversity} (0.503) and \textbf{coverage} (4.17\%), suggesting that \textbf{LSA} provides more varied recommendations but with less precision in terms of relevance.
-\noindent
-\textbf{TF-IDF} has the lowest \textbf{average similarity} value of 0.18, indicating that its recommendations are not closely aligned with the user's preferences. However, it performs well in terms of \textbf{diversity} (0.82), suggesting that it provides a variety of recommendations, although these are less relevant. Its \textbf{coverage} is low at 3.28\%, meaning it can only recommend a small portion of the available dataset.
-\noindent
-Overall, the table illustrates the trade-off between relevance, diversity, and coverage. Algorithms like \textbf{FastText} and \textbf{GloVe} provide more relevant recommendations but vary in their coverage of the dataset. \textbf{TF-IDF} provides more diversity but less relevance, while \textbf{LSA} offers a balance between diversity and coverage at the expense of similarity. These metrics allow us to assess the strengths and weaknesses of each algorithm in terms of their ability to meet the requirements of a recommendation system.\\
+
+
+
+%\section{Experimental Results for Evaluation}
+%
+%To evaluate each algorithm, we calculated several key metrics based on the similarity scores of the recommended items. \textbf{Average Similarity} measures how close the recommended items are to the input, based on cosine similarity. \textbf{Item Coverage} reflects how many unique items the algorithm was able to recommend from the entire dataset, indicating how widely it explores the content. \textbf{Confidence} is calculated as the inverse of the standard deviation of similarity scores, meaning that if the scores are consistent, the confidence is higher. \textbf{Diversity} shows how varied the recommendations are by measuring the variance in similarity scores—a higher value suggests the algorithm returns a more diverse set of results. These metrics were selected because they provide useful insight into the behavior and quality of content-based recommendation models, especially in the absence of user interaction data. Since no explicit or implicit user feedback was available for the dataset, traditional recommendation metrics like Precision, Recall, or NDCG could not be applied. Instead, we focused on metrics that assess the internal structure and output characteristics of the algorithms using only the content and similarity scores.
+
+
+
+
+\section{Experimental Results for Evaluation}
+
+Each algorithm was evaluated using 10 independent test runs, where each run used a different input item. For paragraph-level evaluation, 10 distinct paragraphs from the extracted book texts were used as inputs. For the description-level evaluation, 10 different book summaries from the Goodreads dataset~\cite{goodreads_kumar_2022} were selected. The same set of 10 inputs was used across all algorithms to ensure consistency and fairness.
+
+In each run, the algorithm generated recommendations from the corresponding dataset (paragraphs or descriptions), and the similarity scores of these recommendations were used to compute performance metrics. The final metric values for each algorithm were obtained by averaging the scores across all 10 runs.
+
+The following metrics were calculated:
+\begin{itemize}
+    \item \textbf{Average Similarity}: Mean cosine similarity between the input item and its Top-N recommendations.
+    \item \textbf{Item Coverage}: Percentage of unique recommended items across all runs, indicating how broadly the model explores the dataset.
+    \item \textbf{Confidence}: Inverse of the standard deviation of similarity scores. A lower variance indicates more confident (i.e., stable) recommendations.
+    \item \textbf{Diversity}: Variance of similarity scores among the recommended items. Higher variance implies greater diversity within the Top-N list.
+\end{itemize}
+
+These metrics were chosen to reflect both the quality and consistency of the recommendations, especially since explicit user feedback data was not available. Therefore, traditional recommendation metrics like Precision or Recall could not be applied. Instead, content-based internal evaluation using cosine similarity allowed for a fair, interpretable comparison of the models.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%\noindent
+%\textbf{Performance on Paragraphs} is shown in the first table, which contain more detailed information compared to summaries. As such, the metrics for paragraphs may show higher values for relevance and coverage, since longer text provides more context.
+%
+%\noindent
+%\textbf{FastText} stands out with the highest \textbf{average similarity} of 0.98, meaning its recommendations are highly relevant. However, this comes at the cost of \textbf{average elapsed time} (42.81 seconds), indicating that it is slower compared to other algorithms. It performs well in terms of relevance but is slower in processing. \textbf{TF-IDF} and \textbf{BoW}, while being faster (13.25 and 13.86 seconds for \textbf{avg\_elapsed\_time}), show lower \textbf{average similarity} (0.41 and 0.50, respectively), meaning their recommendations are less aligned with the user’s preferences. These algorithms are quicker but less accurate. \textbf{GloVe} and \textbf{LSA} perform moderately well in terms of similarity, with \textbf{LSA} being slightly faster than \textbf{GloVe}.\\
+%Overall, the first table highlights the trade-off between accuracy and efficiency: algorithms like \textbf{FastText} provide more accurate results but take more time to process, while others like \textbf{TF-IDF} and \textbf{BoW} are quicker but less precise in their recommendations.
+%
+%\noindent
+%\textbf{Performance on Summaries} is shown in the second table. Since summaries are shorter and less detailed than paragraphs, the results show lower accuracy (i.e., \textbf{average similarity}) but provide a broader view of how the algorithms behave with concise content. The coverage of each algorithm was set to return recommended items above the same dynamically set threshold.\\
+%\noindent
+%\textbf{FastText} again performs the best in \textbf{average similarity} with a value of 0.993, which indicates its ability to generate highly relevant recommendations. It also has the highest \textbf{coverage} at 37.44\%, suggesting it can recommend a large portion of the dataset. However, its \textbf{confidence} and \textbf{diversity} values are lower, suggesting that while the recommendations are relevant, they may be more focused and less diverse. 
+%\noindent
+%\textbf{GloVe} performs well with an \textbf{average similarity} of 0.983, meaning its recommendations are quite relevant, though its \textbf{coverage} is only 8.14\%, implying it covers fewer items from the dataset compared to algorithms like \textbf{FastText}.
+%\noindent
+%\textbf{LSA} shows a moderate \textbf{average similarity} of 0.497, indicating that its recommendations are less aligned with the summaries compared to \textbf{FastText} and \textbf{GloVe}. However, it strikes a good balance between \textbf{diversity} (0.503) and \textbf{coverage} (4.17\%), suggesting that \textbf{LSA} provides more varied recommendations but with less precision in terms of relevance.
+%\noindent
+%\textbf{TF-IDF} has the lowest \textbf{average similarity} value of 0.18, indicating that its recommendations are not closely aligned with the user's preferences. However, it performs well in terms of \textbf{diversity} (0.82), suggesting that it provides a variety of recommendations, although these are less relevant. Its \textbf{coverage} is low at 3.28\%, meaning it can only recommend a small portion of the available dataset.
+%\noindent
+%Overall, the table illustrates the trade-off between relevance, diversity, and coverage. Algorithms like \textbf{FastText} and \textbf{GloVe} provide more relevant recommendations but vary in their coverage of the dataset. \textbf{TF-IDF} provides more diversity but less relevance, while \textbf{LSA} offers a balance between diversity and coverage at the expense of similarity. These metrics allow us to assess the strengths and weaknesses of each algorithm in terms of their ability to meet the requirements of a recommendation system.
+
 
 
 \section{Future Work}
-%\noindent
-%\textbf{FUTURE WORK}\\
-Future work could explore improving the efficiency of the algorithms by implementing more advanced optimization techniques to reduce the computational time and memory usage, especially for models like FastText. Additionally, hybrid approaches combining content-based filtering with collaborative filtering could be tested to enhance the accuracy of recommendations by considering both item features and user preferences. Further evaluation of these algorithms could involve larger datasets and more diverse types of content to assess the scalability and generalization of the models. Exploring deep learning-based methods, such as using transformer models or neural networks, could also be an interesting direction for improving recommendation quality. Finally, incorporating user feedback to dynamically adjust recommendations in real-time could be an important area of focus.\\\\
+
+Future research could expand the evaluation by including additional state-of-the-art models beyond the ones tested in this study. Transformer-based architectures such as RoBERTa, DistilBERT, or retrieval-augmented models like RAG and ColBERT may offer improved performance, especially on complex or ambiguous queries. These models are designed to capture deeper contextual relationships and may enhance both relevance and semantic precision in recommendations.
+
+Another promising direction is to experiment with hybrid approaches that combine content-based filtering with collaborative signals (e.g., user ratings or interaction history), enabling systems to adapt dynamically to individual user preferences. This could lead to more personalized and context-aware recommendations.
+
+From a technical perspective, optimizing runtime and memory efficiency, particularly for large-scale datasets, could be achieved through model distillation, approximate nearest neighbor techniques, or embedding quantization. Additionally, evaluating models across more diverse content types and multilingual datasets would help assess their generalizability and robustness.
+
+
+
+
+%\section{Future Work}
+%%\noindent
+%%\textbf{FUTURE WORK}\\
+%Future work could explore improving the efficiency of the algorithms by implementing more advanced optimization techniques to reduce the computational time and memory usage, especially for models like FastText. Additionally, hybrid approaches combining content-based filtering with collaborative filtering could be tested to enhance the accuracy of recommendations by considering both item features and user preferences. Further evaluation of these algorithms could involve larger datasets and more diverse types of content to assess the scalability and generalization of the models. Exploring deep learning-based methods, such as using transformer models or neural networks, could also be an interesting direction for improving recommendation quality. Finally, incorporating user feedback to dynamically adjust recommendations in real-time could be an important area of focus.
 %
+
+
+
+
 \section{Conclusions}
-%\textbf{CONCLUSIONS}\\
-This study focused on evaluating content-based recommender systems for digital library datasets, comparing several algorithms such as TF-IDF, LSA, FastText, GloVe, and BoW. The goal was to assess how well these algorithms can generate recommendations based on the textual content of books and their paragraphs, and how efficiently they perform under different computational loads.\\
-From the results of the performance metrics, it is evident that there are trade-offs between relevance, diversity, and efficiency. Algorithms like FastText and GloVe offer highly relevant recommendations but tend to require more computational resources in terms of processing time. On the other hand, methods such as TF-IDF and BoW are faster but offer lower similarity, meaning the recommendations are less aligned with the user’s preferences. LSA provides a balance between similarity and diversity, though it still lags behind the best-performing models in terms of relevance.\\\\
-Additionally, the analysis of coverage showed how well the algorithms could recommend a wide range of items from the dataset. FastText, while highly relevant, exhibited lower diversity and coverage compared to GloVe, indicating that its recommendations are more focused. In contrast, TF-IDF offered higher diversity but lower relevance, meaning it could recommend a wider variety of items.\\
-The findings suggest that hybrid models combining content-based filtering with collaborative filtering techniques could improve recommendation quality, as they would leverage both textual content and user behavior data. Further research could explore deep learning models, such as neural networks, to detect more complex patterns in large datasets and improve recommendations.\\
-In conclusion, this research provides valuable insights into the strengths and weaknesses of various content-based algorithms for digital libraries, offering a framework to optimize recommendation systems. \\\\
+
+This study presented a comparative evaluation of several content-based recommendation algorithms—namely TF-IDF, BoW, LSA, GloVe, FastText, and Sentence-BERT—applied to digital library data at both paragraph and book-description levels. The results demonstrate that while neural models like FastText and GloVe achieve high similarity scores, they also require significantly more computational resources. On the other hand, traditional models such as TF-IDF and BoW offer fast and lightweight alternatives, but with reduced accuracy.
+
+LSA was shown to strike a middle ground between relevance, diversity, and efficiency, making it a viable option for systems where balance across these factors is important. Sentence-BERT provided strong performance with moderate similarity and higher processing overhead, suggesting its potential for systems where context-rich recommendations are critical.
+
+Overall, the analysis highlights clear trade-offs between recommendation quality, computational cost, and item coverage. These insights offer practical guidance for selecting and deploying content-based recommendation algorithms in academic or large-scale library systems. By aligning system requirements—such as speed, accuracy, or breadth of exploration—with algorithmic strengths, developers can build more effective and scalable recommender systems tailored to digital content.\\
+
+
+
+
+%\section{Conclusions}
+%%\textbf{CONCLUSIONS}\\
+%This study focused on evaluating content-based recommender systems for digital library datasets, comparing several algorithms such as TF-IDF, LSA, FastText, GloVe, and BoW. The goal was to assess how well these algorithms can generate recommendations based on the textual content of books and their paragraphs, and how efficiently they perform under different computational loads.\\
+%From the results of the performance metrics, it is evident that there are trade-offs between relevance, diversity, and efficiency. Algorithms like FastText and GloVe offer highly relevant recommendations but tend to require more computational resources in terms of processing time. On the other hand, methods such as TF-IDF and BoW are faster but offer lower similarity, meaning the recommendations are less aligned with the user’s preferences. LSA provides a balance between similarity and diversity, though it still lags behind the best-performing models in terms of relevance.\\\\
+%Additionally, the analysis of coverage showed how well the algorithms could recommend a wide range of items from the dataset. FastText, while highly relevant, exhibited lower diversity and coverage compared to GloVe, indicating that its recommendations are more focused. In contrast, TF-IDF offered higher diversity but lower relevance, meaning it could recommend a wider variety of items.\\
+%The findings suggest that hybrid models combining content-based filtering with collaborative filtering techniques could improve recommendation quality, as they would leverage both textual content and user behavior data. Further research could explore deep learning models, such as neural networks, to detect more complex patterns in large datasets and improve recommendations.\\
+%In conclusion, this research provides valuable insights into the strengths and weaknesses of various content-based algorithms for digital libraries, offering a framework to optimize recommendation systems. 
 
 
 
@@ -367,10 +592,11 @@ In conclusion, this research provides valuable insights into the strengths and w
 %\end{thebibliography}
  
  
- 
- 
- \bibliographystyle{splncs04}
- \bibliography{literature}
- 
+
+ \vspace{-1em} % tighten space before references if needed
+\begin{multicols}{2}
+\bibliographystyle{splncs04}
+\bibliography{literature}
+\end{multicols}
  
 \end{document}
