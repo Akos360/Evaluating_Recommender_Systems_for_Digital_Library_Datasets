@@ -7,7 +7,7 @@ Being always timely and correctly informed greatly helps in our decision-making.
 
 Map the currently used web recommendation systems and algorithms. Also, explore the possibilities of similar AI-based tools. Analyze the possibilities of their use for recommendation systems in the context of digital libraries and repositories. Propose and implement your own solution utilizing recommendation systems to simplify information retrieval. Evaluate the implemented solution on real data from a freely available repository.
 
-## Key points
+## 🔑 Key points
 - Ratings density
 - Recommender systems
 - Concept drift
@@ -20,3 +20,15 @@ Map the currently used web recommendation systems and algorithms. Also, explore 
 - Knowledge based systems
 
 ![Recommentadion_system](readme_img/recommendation.jpg)
+
+
+## 📰 Referenced Articles list and Notes - Notion
+[BP: Evaluating Recommender Systems for Digital Library Datasets](https://www.notion.so/BP-Evaluating-Recommender-Systems-for-Digital-Library-Datasets-5f3608bfd55c453fac923d997a1262ec?pvs=4)
+
+
+## 💻 Project Code & Implementation
+
+You can find the full implementation, Jupyter notebook, Python scripts, and technical documentation here:
+
+[Recommender System Code Repository](https://github.com/Akos360/Evaluating_Recommender_Systems_Implementation)
+
