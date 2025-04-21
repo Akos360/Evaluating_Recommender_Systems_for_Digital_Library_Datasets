@@ -3,7 +3,8 @@
 
 \newcommand{\thesisTitle}[0] {Evaluating Recommender Systems for Digital Library Datasets}
 %Odporúčacie systémy založené na AI
-\documentclass[\myFontSize,oneside,english,hidelinks,a4paper]{article} 
+\documentclass[\myFontSize,a4paper,oneside,english,hidelinks]{article} 
+%\documentclass[\myFontSize,a4paper,twoside,openright,english,hidelinks]{book} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{graphicx}
 \usepackage{float}
@@ -707,12 +708,48 @@ BERT, implemented through the SentenceTransformers framework, represents the sta
 %\item \textbf{BM25 (Best Match 25)}\\
 %Is a ranking function that builds on the TF-IDF model. It ranks a set of documents based on the query terms appearing in each document, not considering their proximity within the document.
 \end{enumerate}
-
-
-By including models from these various categories (statistical, latent, word-level embeddings, and contextual transformer-based representations) the experimental design ensures a comprehensive comparison across different levels of linguistic representation.
-
-
 %
+By including models from these various categories (statistical, latent, word-level embeddings, and contextual transformer-based representations) the experimental design ensures a comprehensive comparison across different levels of linguistic representation.
+%
+\subsection{Experiment Types}
+%
+Experimenting with recommendations can be done in different ways. Here are the types of experiments to test the algorithms:
+{
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[h!]
+\centering
+\begin{tabular}{p{3cm}|p{10cm}}
+\hline
+\textbf{Type} & \textbf{Description} \\
+\hline
+Offline & Method: simulation of user behavior based on past interactions \\
+        & Task: defined by the researcher, purely algorithmic \\
+        & Repeatability: evaluation of an arbitrary number of experiments possible at low cost \\
+        & Scale: large dataset, large number of users \\
+        & Insights: quantitative, narrow \\
+\hline
+User Study & Method: user observation in live or laboratory setting \\
+           & Task: defined by the researcher, carried out by the user \\
+           & Repeatability: expensive \\
+           & Scale: small cohort of users \\
+           & Insights: quantitative and/or qualitative \\
+\hline
+Online & Method: real-world user observation, online field experiment \\
+       & Task: self-selected by the user, carried out by the user \\
+       & Repeatability: expensive \\
+       & Scale: large \\
+       & Insights: quantitative and/or qualitative \\
+\hline
+\end{tabular}
+
+\caption{Overview of Experiment Types \cite{Zangerle2023}}
+\end{table}\\
+}
+%
+%
+\textbf{Offline experiments} are the most popular experiment type. They aim to compare different recommendation algorithms and settings and they do not require any user interaction and may be considered system-centric \cite{Zangerle2023}. 
+The \textbf{offline evaluation} method will be adopted, as the goal is to test and compare recommendation algorithms without relying on actual user interaction or feedback. Since no user behavior data is available, offline evaluation provides a practical way to test the system without users
+and could be repeated as many times as needed for system-centric experimentation.
 %
 %\begin{table}[h!]
 %\centering
@@ -802,13 +839,14 @@ By including models from these various categories (statistical, latent, word-lev
 
     \item \textbf{Integration of different text representation methods}
     \begin{itemize}
-        \item TF-IDF
-        \item BoW (Bag of Words)
-        \item LSA (Latent Semantic Analysis)
-        \item GloVe
-        \item FastText
-        \item BERT (via SentenceTransformers)
+	\item TF-IDF (Term Frequency–Inverse Document Frequency)
+	\item LSA (Latent Semantic Analysis)
+	\item BoW (Bag of Words)
+	\item FastText (Facebook's FastText Word Embeddings)
+	\item GloVe (Global Vectors for Word Representation)
+	\item BERT (Bidirectional Encoder Representations from Transformers - Sentence-BERT variant)
     \end{itemize}
+
 
     \item \textbf{Running experiments and storing results}
     \begin{itemize}
@@ -929,95 +967,63 @@ The following diagram summarizes the overall flow of the proposed system:
 \clearpage{}
 \section{Implementation}
 % 3,4,5 Pages\\
-This chapter describes how the proposed system was implemented in practice. It outlines the development environment and tools used, the data preparation process, integration of multiple text representation methods, and the overall recommendation pipeline. 
+This section describes how the proposed system was implemented in practice. It outlines the data preparation process, integration of multiple text representation methods, the overall recommendation pipeline and the development environment.\\
+The system was implemented using the \textbf{Python 3.10} programming language, which is widely adopted in the fields of data science and machine learning. For data preparation and experimentation, the \textbf{Jupyter Notebook} environment was used. This way the development was interactive with  step-by-step testing of individual components during preprocessing and exploration of various recommendation models.\\
+While the notebooks were used locally for developing and testing the recommendation logic, the final recommendation system was implemented as a collection of structured Python scripts. These scripts were executed on a \textbf{Google Cloud Virtual Machine (VM)} configured with 8 vCPUs, 32 GB of RAM, and a dedicated NVIDIA L4 GPU. 
+This cloud-based deployment enabled efficient GPU-accelerated execution of models and ensured clean, uninterrupted \textbf{multiprocessing-based resource tracking} across CPU, memory, and GPU usage. \\
+Each model was tested in ten evaluation runs using this setup, with results logged for further evaluation. Then the evaluation itself was carried out in a separate Jupyter Notebook, executed locally, where the recommendation results from the VM runs were collected and visualized.
 
 \subsection{Extracting Information and Building a Dataset}
-First, the books were extracted from the digital library and stored as individual JSON files. Each file contained the entire data of a single book, further segmented into sentences, pages, and paragraphs for flexibility in experimentation.
-For the full-text analysis, a dataset of 45k paragraphs was created. The average paragraph length was approximately 60-70 words, with the longest paragraph consisting of 2000 words.\\
-In addition to the extracted book paragraphs, a publicly available dataset titled \textit{Books Details Dataset}, which was scraped from Goodreads \cite{goodreads_kumar_2022} was also used in the experiments. This dataset includes metadata for over 13,000 books, such as title, author, genres, ratings, and textual descriptions. The dataset contains entries with descriptions averaging approximately 160 words. These summaries were treated similarly to paragraphs during preprocessing and recommendation, allowing models to be tested on both short- and long-form content for robustness and comparison.\\
+First, the books were extracted from the digital library and stored as individual JSON files. Each file contained the entire data of a single book, further segmented into sentences, pages, and paragraphs for flexibility in experimentation. These JSON files were loaded and parsed into \textit{Pandas DataFrames} for easier handling and segmentation into paragraphs. The processed data was then exported into CSV files and a dataset of 45,461 paragraphs was created. 
+The average paragraph length was approximately 60-70 words, with the longest paragraph consisting of 2000 words.\\
+In addition to the extracted book paragraphs, a publicly available dataset titled \textit{Books Details Dataset}, which was scraped from Goodreads \cite{goodreads_kumar_2022} was also used in the experiments. This dataset includes metadata for over 13,000 books, such as title, author, genres, ratings, and textual descriptions. The dataset contains entries with descriptions averaging approximately 160 words. These summaries were treated similarly to paragraphs during preprocessing and recommendation, allowing models to be tested on both short- and long-form content for comparison.
 
 
+\subsection{Content-Based Recommendation Pipeline}
+The core of the system is a modular recommendation pipeline designed to evaluate and compare various text-based content recommendation algorithms. The pipeline is implemented in Python, leveraging object-oriented principles to encapsulate logic within dedicated model classes. Each model inherits from a shared abstract base class, ensuring a unified interface for training, input preparation, similarity computation, and output formatting.
 
-\subsection{Environment and Tools}
-Jupyter Notebook\\
-Virtual Machine\\
-Multiprocessing\\
-GPU\\
-Implementation was done in Python 3.12.6\\
-libraries: ...
+The recommendation process begins by loading a configuration object that defines the algorithm to be used, the dataset path, and the target input samples (i.e., a book or a paragraph to be evaluated). Once the appropriate model is initialized, the following steps are executed sequentially:
 
-\subsection{Used Text Represantation Models}
+\begin{enumerate}
+    \item \textbf{Model Training:} The selected model is trained on the dataset using its internal representation logic. Some models (e.g., TF-IDF, FastText) require training on the corpus, while others (e.g., BERT) use pre-trained embeddings and skip this step.
 
+    \item \textbf{Input Preparation:} The input book or paragraph is extracted based on predefined pairs of indices. A filtered corpus is prepared by excluding the current input from the dataset to prevent self-recommendation.
 
+    \item \textbf{Vectorization:} The input text and all candidate documents are converted into fixed-size vector representations. This process is model-dependent—either using bag-of-words, TF-IDF weights, or dense embeddings (e.g., GloVe, FastText, BERT).
 
+    \item \textbf{Similarity Calculation:} Cosine similarity is used to compare the input vector with each document vector. If the model supports matrix operations (e.g., BoW, TF-IDF), the similarities are computed in batch mode for improved performance. For embedding-based models, similarity is computed individually per document.
 
-\subsubsection{Bert}
-\begin{verbatim}
-def weighted_rating(R, v, m, C):
-    return (v / (v + m)) * R + (m / (v + m)) * C
-\end{verbatim}
+    \item \textbf{Filtering and Ranking:} Results are filtered using a dynamic threshold, calculated as a percentage of the maximum similarity score, ensuring that only highly similar documents are returned. The top N documents are then selected based on their similarity values.
 
+    \item \textbf{Result Storage and Tracking:} For each execution, the input and the list of recommended books (with metadata and similarity score) are stored in CSV files. Additionally, resource usage (CPU, GPU, memory) and execution time are logged for performance evaluation.
+\end{enumerate}
 
+The pipeline is designed to be flexible, allowing new models to be integrated with minimal configuration. Each model defines its own internal logic but conforms to the same evaluation and tracking interface, enabling fair and consistent benchmarking across multiple text representation approaches.
 
-\begin{lstlisting}
-def weighted_rating(R, v, m, C):
-    return (v / (v + m)) * R + (m / (v + m)) * C
-\end{lstlisting}
-
-
-
-\subsection{Experiment Setup}
-The \textbf{Task} is to recommend Top N books (list of books) based on 1 input book (opened book).\\\\
-\textbf{Objectives:} 
-\begin{itemize}
-\item Implement and test multiple algorithms
-\item Compare performance of algorithms using evaluation metrics
-\end{itemize}
-
-Experimenting with recommendations can be done in different ways. Here are the types of experiments to test the algorithms:
-{
-\renewcommand{\arraystretch}{1.5}
-\begin{table}[h!]
-\centering
-\begin{tabular}{p{3cm}|p{10cm}}
-\hline
-\textbf{Type} & \textbf{Description} \\
-\hline
-Offline & Method: simulation of user behavior based on past interactions \\
-        & Task: defined by the researcher, purely algorithmic \\
-        & Repeatability: evaluation of an arbitrary number of experiments possible at low cost \\
-        & Scale: large dataset, large number of users \\
-        & Insights: quantitative, narrow \\
-\hline
-User Study & Method: user observation in live or laboratory setting \\
-           & Task: defined by the researcher, carried out by the user \\
-           & Repeatability: expensive \\
-           & Scale: small cohort of users \\
-           & Insights: quantitative and/or qualitative \\
-\hline
-Online & Method: real-world user observation, online field experiment \\
-       & Task: self-selected by the user, carried out by the user \\
-       & Repeatability: expensive \\
-       & Scale: large \\
-       & Insights: quantitative and/or qualitative \\
-\hline
-\end{tabular}
-
-\caption{Overview of Experiment Types \cite{Zangerle2023}}
-\end{table}\\
-}
+% how code can be in latex
+%\begin{verbatim}
+%def weighted_rating(R, v, m, C):
+%    return (v / (v + m)) * R + (m / (v + m)) * C
+%\end{verbatim}
 %
 %
-\textbf{Offline evaluations} are the most popular experiment type. They aim to compare different recommendation algorithms and settings and they do not require any user interaction and may be considered system-centric.  \cite{Zangerle2023}\\\\
+%
+%\begin{lstlisting}
+%def weighted_rating(R, v, m, C):
+%    return (v / (v + m)) * R + (m / (v + m)) * C
+%\end{lstlisting}
 
-\begin{itemize}
-    \item \textbf{Technical setup and execution}
-    \begin{itemize}
-        \item Initial development will begin in Jupyter Notebook using Python
-        \item For multiprocessing and GPU support, the system will be deployed on a Google Cloud Virtual Machine
-        \item Multiprocessing will be used for CPU/GPU resource tracking
-    \end{itemize}
-\end{itemize}
+
+
+\subsection{Deployment}
+The following diagram presents the deployment setup of the system, including the virtual machine environment and local tools used for development and evaluation:
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{img/deployment_diagram.drawio.png}
+    \caption{Deployment diagram}
+    \label{fig:deployment_diagram}
+\end{figure}
+
 
 %
 %\begin{itemize}
@@ -1029,8 +1035,10 @@ Online & Method: real-world user observation, online field experiment \\
 %\end{itemize}
 %%
 %
+
+\clearpage
 \section{Results and Evaluation}
-This section presents how the system was evaluated using defined metrics and tracked in terms of performance.\\
+This section presents how the recommendation results were evaluated using defined metrics and tracked in terms of performance.\\
 
 
 Graphs\\
@@ -1103,6 +1111,21 @@ well a recommendation system made the user aware of previously unknown items
 that subsequently turn out to be useful in context [26].\cite{Avazpour2014245}\\
 
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{img/paragraphs_radarchart.png}
+    \caption{Metrics Results of Paragraphs Vizualized}
+    \label{fig:paragraphs_radar}
+\end{figure}
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{img/descriptions_radarchart.png}
+    \caption{Metrics Results of Descriptions Vizualized}
+    \label{fig:descriptions_radar}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage{}
@@ -1111,7 +1134,7 @@ that subsequently turn out to be useful in context [26].\cite{Avazpour2014245}\\
 After implementing and testing the approaches of recommendation for books, I have found out that ...\\
 
 
-%\subsection{Future Work}
+\subsection{Future Work}
 
 \clearpage
 \thispagestyle{empty}
